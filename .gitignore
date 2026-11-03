@@ -1,0 +1,32 @@
+# Datasets and archives
+dataset/
+data/
+*.zip
+*.tar
+*.tar.gz
+
+# Model weights and generated artifacts
+checkpoints/
+weights/
+outputs/
+artifacts/
+*.pth
+*.pt
+*.ckpt
+*.safetensors
+
+# Candidate caches and experiment logs
+cache/
+results/
+logs/
+*.jsonl
+*.log
+
+# Python and local environments
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+.pytest_cache/
+
