@@ -76,9 +76,9 @@ The first analysis should use only queries for which the fixed candidate set con
 
 ## Execution order
 
-1. Build a unified DIOR/OPT adapter and verify split and bbox conventions.
-2. Export immutable Top-K candidate manifests.
-3. Reproduce scalar reranking.
+1. Reproduce the public OTA-Det-L detector baseline on DIOR-RSVG and OPT-RSVG.
+2. Export immutable Top-K candidate manifests and measure proposal recall.
+3. Reproduce the candidate-independent scalar ListwiseMLP baseline.
 4. Construct pairwise hard negatives from same-image candidates.
 5. Add geometry and neighborhood relations.
 6. Add text relation features and listwise loss.

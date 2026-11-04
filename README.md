@@ -81,6 +81,8 @@ Ground-truth IoU and positive labels may be generated for training or offline di
 
 See `docs/research_plan.md` for the current execution plan and stopping criteria.
 
+The baseline is defined in `docs/baseline_reproduction.md`. The first paper result is not a competition score: it is the public DIOR-RSVG/OPT-RSVG OTA-Det-L result followed by the fixed-candidate scalar reranker result.
+
 ## Reproducibility
 
 Every reported experiment must record the dataset split, candidate generator, K, feature manifest, random seed, checkpoint identifier, code revision, and evaluation command. Test sets are evaluated only after the configuration is frozen.
