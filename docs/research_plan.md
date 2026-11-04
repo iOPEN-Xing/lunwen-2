@@ -42,6 +42,8 @@ fixed Top-K candidates
     -> text-conditioned listwise ranker
 ```
 
+The initial implementation reuses the scalar baseline's listwise cross-entropy and soft-IoU target. The only new model component is a pairwise candidate relation encoder with neighbor aggregation. A pairwise term is optional: for ordinary candidate manifests it uses IoU-defined negatives; for audited counterfactual manifests it uses an explicit positive/negative pair. These two modes must be reported separately.
+
 Only one new source of information or one new loss is introduced per ablation.
 
 ## Required reporting

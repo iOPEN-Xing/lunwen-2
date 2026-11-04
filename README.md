@@ -20,7 +20,7 @@ The experimental pipeline is deliberately two-stage:
 image + text
     -> fixed Top-K proposal generator
     -> candidate and context features
-    -> candidate-independent / pairwise / listwise scorer
+    -> candidate-independent / relational listwise scorer
     -> final box
 ```
 
@@ -82,6 +82,8 @@ Ground-truth IoU and positive labels may be generated for training or offline di
 See `docs/research_plan.md` for the current execution plan and stopping criteria.
 
 The baseline is defined in `docs/baseline_reproduction.md`: public DIOR-RSVG/OPT-RSVG OTA-Det-L results followed by the fixed-candidate scalar reranker.
+
+The first relational implementation is `src/relation_reranker.py`. It reuses the baseline's per-candidate geometry and listwise objective, adding only pairwise candidate geometry and neighbor aggregation. It does not access ground-truth IoU at inference time.
 
 ## Reproducibility
 
