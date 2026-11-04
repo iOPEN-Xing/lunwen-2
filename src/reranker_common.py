@@ -91,6 +91,72 @@ def row_to_example(row: dict, positive_iou: float = 0.5) -> dict:
     }
 
 
+def load_dior_rsvg_objects(annotation_dir: Path) -> dict[str, dict]:
+    """Load DIOR-RSVG object boxes/captions grouped by image.
+
+    The adapter intentionally reads the public VOC-style annotations rather than
+    trusting synthetic records to carry boxes or split assignments.
+    """
+    import xml.etree.ElementTree as ET
+
+    images: dict[str, dict] = {}
+    for path in sorted(annotation_dir.glob("*.xml")):
+        root = ET.parse(path).getroot()
+        image = Path(root.findtext("filename") or f"{path.stem}.jpg").name
+        width = int(float(root.findtext("size/width") or 0))
+        height = int(float(root.findtext("size/height") or 0))
+        objects = []
+        for index, obj in enumerate(root.findall("object")):
+            bbox = obj.find("bndbox")
+            if bbox is None:
+                continue
+            box = [
+                float(bbox.findtext("xmin") or 0), float(bbox.findtext("ymin") or 0),
+                float(bbox.findtext("xmax") or 0), float(bbox.findtext("ymax") or 0),
+            ]
+            objects.append({
+                "target_index": index,
+                "bbox_xyxy": box,
+                "category": (obj.findtext("name") or "").strip(),
+                "caption": (obj.findtext("description") or obj.findtext("name") or "").strip(),
+            })
+        images[image] = {"width": width, "height": height, "objects": objects}
+    return images
+
+
+def image_split_map(split_dir: Path) -> dict[str, str]:
+    """Map DIOR image ids to train/val/test using the official object-index split."""
+    import xml.etree.ElementTree as ET
+
+    mapping: dict[str, str] = {}
+    for split in ("train", "val", "test"):
+        indices = {int(line.strip()) for line in (split_dir / f"{split}.txt").read_text().split() if line.strip()}
+        cursor = 0
+        for path in sorted(split_dir.parent.joinpath("Annotations").glob("*.xml")):
+            root = ET.parse(path).getroot()
+            image = Path(root.findtext("filename") or f"{path.stem}.jpg").name
+            for _ in root.findall("object"):
+                if cursor in indices:
+                    mapping[image] = split
+                cursor += 1
+    return mapping
+
+
+def synthetic_pair_records(path: Path, split_map: dict[str, str], allowed_splits: set[str]) -> list[dict]:
+    """Read the 300-record DIOR synthetic file without inventing missing boxes."""
+    records = []
+    for record in load_jsonl(path):
+        split = split_map.get(record["image"])
+        if split not in allowed_splits:
+            continue
+        if record.get("negative_text") is None:
+            continue
+        if record.get("unique_status") != "unique":
+            continue
+        records.append({**record, "split": split})
+    return records
+
+
 def build_examples(rows: Iterable[dict], positive_iou: float = 0.5) -> list[dict]:
     examples = []
     for row in rows:

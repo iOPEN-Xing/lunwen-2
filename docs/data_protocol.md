@@ -31,3 +31,5 @@ All datasets should be converted to:
 
 Candidate exports should contain detector outputs only. Training-only fields such as IoU and `is_positive` must be generated in a separate diagnostic view.
 
+The DIOR synthetic counterfactual file is auxiliary text supervision. It must be joined to image-level annotations and official image splits; it is not itself a replacement for detector candidates. Any GT-object candidate list is diagnostic-only and cannot be used as the main grounding result.
+
