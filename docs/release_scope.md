@@ -1,12 +1,8 @@
 # Release Scope
 
-This repository is the clean publication entry point for the paper project. It excludes:
+This repository is the publication entry point for the public-benchmark paper project.
 
-- competition scoring and submission code;
-- Docker packaging and offline submission checks;
-- historical Qwen, LPVA, MGVLF, OSClip, and synthetic-text experiments;
-- local challenge data, private annotations, and generated predictions;
-- model weights, logs, candidate caches, and large downloaded archives.
+It contains only the research protocol, dataset interfaces, candidate-ranking code, experiment configurations, and lightweight tests needed for DIOR-RSVG and OPT-RSVG. Datasets, model weights, candidate caches, generated predictions, logs, and downloaded archives remain outside Git.
 
-The original workspace remains the provenance archive. Only code and documents that support the public benchmark paper are copied into this release directory.
+All reported experiments must use the public benchmark splits and the protocol in `docs/baseline_reproduction.md`.
 

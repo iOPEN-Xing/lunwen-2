@@ -81,7 +81,7 @@ Ground-truth IoU and positive labels may be generated for training or offline di
 
 See `docs/research_plan.md` for the current execution plan and stopping criteria.
 
-The baseline is defined in `docs/baseline_reproduction.md`. The first paper result is not a competition score: it is the public DIOR-RSVG/OPT-RSVG OTA-Det-L result followed by the fixed-candidate scalar reranker result.
+The baseline is defined in `docs/baseline_reproduction.md`: public DIOR-RSVG/OPT-RSVG OTA-Det-L results followed by the fixed-candidate scalar reranker.
 
 ## Reproducibility
 
